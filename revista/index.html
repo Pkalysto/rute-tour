@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#E9E7DC">
+<style>:root{color-scheme:light}body{margin:0;font:14px system-ui,sans-serif;background:#E9E7DC}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Revista Rute</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500;6..96,700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
+<style>
+  :root{
+    color-scheme: light;
+    --papel:#F7F5ED;
+    --papel-fundo:#E9E7DC;
+    --tinta:#2A2E28;
+    --verde:#44743F;
+    --verde-suave:#DBE7D1;
+    --amarelo:#F5C63D;
+    --amarelo-suave:#FBEBB2;
+    --cinza:#8B8F86;
+    --linha:#D8D5C7;
+    --display:"Bodoni Moda", Georgia, "Times New Roman", serif;
+    --sans:"Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --serif:"Newsreader", Georgia, serif;
+  }
+
+  body{
+    background:var(--papel-fundo);
+    color:var(--tinta);
+    font-family:var(--sans);
+    min-height:100vh;
+    padding:24px 14px 60px;
+    overflow-x:hidden;
+  }
+
+  .banca{max-width:580px; margin:0 auto; display:flex; flex-direction:column; gap:20px}
+
+  /* ---------- capa ---------- */
+  .capa{
+    background:var(--papel);
+    border:1px solid var(--linha);
+    box-shadow:0 14px 34px rgba(42,46,40,.13);
+    padding:20px 22px 24px;
+    position:relative;
+    overflow:hidden;
+  }
+
+  .cinta{
+    display:flex; justify-content:space-between; gap:12px;
+    font-size:9.5px; font-weight:700; letter-spacing:.19em;
+    color:var(--cinza); text-transform:uppercase;
+    padding-bottom:11px; border-bottom:1.5px solid var(--tinta);
+  }
+
+  .masthead{
+    font-family:var(--display); font-weight:700;
+    font-size:clamp(74px, 23vw, 148px);
+    line-height:.8; letter-spacing:-.02em;
+    margin:14px 0 0; color:var(--verde);
+    text-align:center;
+  }
+
+  .subtitulo{
+    text-align:center; margin:8px 0 0;
+    font-size:10px; font-weight:700; letter-spacing:.3em;
+    color:var(--tinta); text-transform:uppercase;
+  }
+
+  .selo{
+    position:absolute; right:14px; top:104px;
+    width:96px; height:96px; border-radius:50%;
+    background:var(--amarelo);
+    display:grid; place-items:center; text-align:center;
+    font-size:11px; font-weight:700; letter-spacing:.08em; line-height:1.25;
+    color:var(--tinta); text-transform:uppercase;
+    transform:rotate(-9deg);
+    box-shadow:0 4px 14px rgba(42,46,40,.16);
+    animation:baloico 4.5s ease-in-out infinite alternate;
+  }
+  @keyframes baloico{from{transform:rotate(-9deg)} to{transform:rotate(-3deg)}}
+
+  .chamadas{
+    margin-top:26px;
+    display:grid; grid-template-columns:1fr 1fr; gap:18px 22px;
+  }
+  .chamada{display:flex; flex-direction:column; gap:5px}
+  .chamada.destaque{grid-column:1 / -1; padding-bottom:16px; border-bottom:1.5px solid var(--tinta)}
+
+  .rubrica{
+    font-size:9px; font-weight:700; letter-spacing:.2em;
+    color:var(--verde); text-transform:uppercase;
+  }
+  .chamada p{
+    margin:0; font-weight:600; font-size:14.5px; line-height:1.3;
+    letter-spacing:-.006em; text-wrap:balance;
+  }
+  .chamada.destaque p{
+    font-size:clamp(21px, 5.6vw, 29px); font-weight:700; line-height:1.12;
+  }
+  .marca{background:var(--amarelo-suave); box-shadow:0 0 0 3px var(--amarelo-suave)}
+  .en{font-family:var(--display); font-style:italic; font-weight:500}
+
+  .base{
+    margin-top:24px; padding-top:14px; border-top:1.5px solid var(--tinta);
+    display:flex; align-items:flex-end; justify-content:space-between; gap:16px;
+  }
+  .codigo{display:flex; align-items:flex-end; gap:2px; height:34px}
+  .codigo i{width:2px; background:var(--tinta); display:block}
+  .base .nota{
+    font-size:9px; font-weight:700; letter-spacing:.16em;
+    color:var(--cinza); text-transform:uppercase; text-align:right;
+  }
+
+  /* ---------- botão ---------- */
+  .abrir{
+    font-family:var(--sans); font-weight:700; font-size:12.5px; letter-spacing:.13em;
+    text-transform:uppercase;
+    background:var(--verde); color:var(--papel);
+    border:0; padding:16px 20px; cursor:pointer; width:100%;
+  }
+  .abrir:hover{background:#3B6537}
+  .abrir:active{transform:translateY(1px)}
+  .abrir:focus-visible{outline:2px solid var(--tinta); outline-offset:3px}
+  .abrir[disabled]{background:var(--cinza); cursor:default}
+
+  /* ---------- página de dentro ---------- */
+  .pagina{
+    background:var(--papel);
+    border:1px solid var(--linha);
+    box-shadow:0 14px 34px rgba(42,46,40,.13);
+    padding:34px 30px 28px;
+    animation:abre .32s ease both;
+  }
+  @keyframes abre{from{opacity:0; transform:translateY(12px)} to{opacity:1; transform:none}}
+
+  .pagina .rubrica{margin-bottom:10px; display:block}
+  .pagina h2{
+    font-family:var(--display); font-weight:500;
+    font-size:clamp(30px, 8vw, 44px); line-height:1.05;
+    margin:0 0 20px; letter-spacing:-.02em; color:var(--verde);
+    text-wrap:balance;
+  }
+  .pagina p{
+    font-family:var(--serif); font-size:18px; line-height:1.66;
+    margin:0 0 15px; max-width:34em;
+  }
+  .pagina p.entrada::first-letter{
+    float:left; font-family:var(--display); font-weight:700;
+    font-size:3.5em; line-height:.78; padding:2px 9px 0 0; color:var(--verde);
+  }
+  .pagina .assina{
+    font-family:var(--serif); font-style:italic; font-size:18px; margin-top:22px;
+  }
+  .pagina .creditos{
+    margin-top:26px; padding-top:13px; border-top:1px solid var(--linha);
+    font-family:var(--sans); font-size:9px; font-weight:700;
+    letter-spacing:.17em; color:var(--cinza); text-transform:uppercase;
+  }
+
+  .som{
+    position:fixed; right:12px; top:12px; z-index:60;
+    font-family:var(--sans); font-weight:700; font-size:9.5px; letter-spacing:.14em;
+    text-transform:uppercase;
+    background:var(--papel); color:var(--cinza);
+    border:1px solid var(--linha); padding:8px 11px; cursor:pointer;
+  }
+  .som[aria-pressed="true"]{background:var(--tinta); color:var(--papel); border-color:var(--tinta)}
+
+  #conf{position:fixed; inset:0; pointer-events:none; z-index:80; overflow:hidden}
+  #conf i{position:absolute; top:-22px; width:8px; height:8px; animation:cai linear forwards}
+  #conf i.pata{
+    width:14px; height:14px; background-repeat:no-repeat; background-position:center; background-size:contain;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%2344743F'%3E%3Ccircle cx='6' cy='5' r='2.6'/%3E%3Ccircle cx='12' cy='4' r='2.6'/%3E%3Ccircle cx='16.5' cy='8.5' r='2.4'/%3E%3Ccircle cx='3.5' cy='10' r='2.4'/%3E%3Cellipse cx='10' cy='14' rx='5.4' ry='4.6'/%3E%3C/svg%3E");
+  }
+  @keyframes cai{to{transform:translate3d(var(--x),108vh,0) rotate(500deg)}}
+
+  @media (max-width:520px){
+    body{padding:16px 10px 46px}
+    .capa{padding:16px 15px 18px}
+    .chamadas{grid-template-columns:1fr; gap:15px}
+    .selo{width:76px; height:76px; font-size:9.5px; top:88px; right:8px}
+    .pagina{padding:26px 19px 22px}
+    .pagina p{font-size:17px}
+    .base{flex-direction:column; align-items:flex-start; gap:12px}
+    .base .nota{text-align:left}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.001ms !important; animation-iteration-count:1 !important}
+  }
+</style>
+
+<button class="som" id="som" type="button" aria-pressed="true">Som</button>
+
+<div class="banca">
+
+  <article class="capa">
+    <div class="cinta">
+      <span>Setembro 2026</span>
+      <span>N.&ordm; 1</span>
+      <span>Edição de aniversário</span>
+    </div>
+
+    <h1 class="masthead">RUTE</h1>
+    <p class="subtitulo">A revista dela, sobre ela</p>
+
+    <div class="selo" aria-hidden="true">Good<br>vibes<br>only</div>
+
+    <div class="chamadas">
+      <div class="chamada destaque">
+        <span class="rubrica">Beleza</span>
+        <p><span class="en">Glow up</span> anual: <span class="marca">este ano nem foi preciso esforço</span></p>
+      </div>
+
+      <div class="chamada">
+        <span class="rubrica">Hoje</span>
+        <p><span class="en">Best day ever</span> — o guia completo, hora a hora</p>
+      </div>
+
+      <div class="chamada">
+        <span class="rubrica">Self care</span>
+        <p>A segunda fatia conta. Nós explicamos porquê</p>
+      </div>
+
+      <div class="chamada">
+        <span class="rubrica">Pets</span>
+        <p>Cães: o verdadeiro motivo de mudar de passeio</p>
+      </div>
+
+      <div class="chamada">
+        <span class="rubrica">Desporto</span>
+        <p>Calvão, casa e fora: a adepta n.&ordm; 1 fala</p>
+      </div>
+
+      <div class="chamada">
+        <span class="rubrica">Agenda</span>
+        <p>Festivais 2027 &middot; <span class="en">save the date</span></p>
+      </div>
+
+      <div class="chamada">
+        <span class="rubrica">Horóscopo</span>
+        <p>Virgem: um ano <span class="en">no stress</span>. Está escrito</p>
+      </div>
+    </div>
+
+    <div class="base">
+      <div class="codigo" id="codigo" aria-hidden="true"></div>
+      <span class="nota">Exemplar único &middot; não se vende<br>Distribuição: uma leitora</span>
+    </div>
+  </article>
+
+  <button class="abrir" id="abrir" type="button">Abrir a revista</button>
+
+  <article class="pagina" id="pagina" hidden>
+    <span class="rubrica">Carta da edição &middot; página 9</span>
+    <h2>Parabéns, Rute.</h2>
+    <p class="entrada">
+      Espero que tenhas um dia mesmo bom, cheio de coisas simples,
+      pessoas de quem gostas e um bolo à altura da ocasião.
+    </p>
+    <p>
+      Que apareça um cão pelo caminho só para teres a quem fazer festas,
+      que o Calvão e o Porto ganhem no mesmo fim de semana,
+      e que sobre bolo para a segunda fatia.
+    </p>
+    <p>Aproveita muito o teu dia.</p>
+    <p class="assina">— Paulo</p>
+    <p class="creditos">Edição de 9 de setembro de 2026 &middot; tiragem de um exemplar</p>
+  </article>
+
+</div>
+
+<div id="conf" aria-hidden="true"></div>
+
+<script>
+(function(){
+  var reduz = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* código de barras */
+  var cod = document.getElementById('codigo');
+  for(var i = 0; i < 34; i++){
+    var b = document.createElement('i');
+    b.style.height = (14 + Math.random() * 20) + 'px';
+    b.style.width = (Math.random() < 0.3 ? 3 : 1.5) + 'px';
+    cod.appendChild(b);
+  }
+
+  /* som */
+  var ligado = true, actx = null;
+  var btnSom = document.getElementById('som');
+  btnSom.addEventListener('click', function(){
+    ligado = !ligado;
+    btnSom.setAttribute('aria-pressed', String(ligado));
+    btnSom.textContent = ligado ? 'Som' : 'Sem som';
+  });
+
+  function palmas(){
+    if(!ligado) return;
+    try{
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if(!AC) return;
+      if(!actx) actx = new AC();
+      if(actx.state === 'suspended') actx.resume();
+
+      var dur = 3.6, sr = actx.sampleRate, len = Math.floor(sr * dur);
+      var buf = actx.createBuffer(1, len, sr);
+      var d = buf.getChannelData(0);
+
+      for(var c = 0; c < 300; c++){
+        var t0 = Math.floor(Math.random() * (len - sr * 0.12));
+        var amp = 0.3 + Math.random() * 0.7;
+        var dec = sr * (0.010 + Math.random() * 0.028);
+        for(var j = 0; j < dec; j++){
+          d[t0 + j] += (Math.random() * 2 - 1) * amp * Math.exp(-j / (dec * 0.32));
+        }
+      }
+      for(var i = 0; i < len; i++){
+        var env = Math.min(1, i / (sr * 0.2)) * Math.min(1, (len - i) / (sr * 1.1));
+        var v = d[i] * 0.45 + (Math.random() * 2 - 1) * 0.13 * env;
+        d[i] = v > 1 ? 1 : (v < -1 ? -1 : v);
+      }
+
+      var src = actx.createBufferSource(); src.buffer = buf;
+      var bp = actx.createBiquadFilter();
+      bp.type = 'bandpass'; bp.frequency.value = 1700; bp.Q.value = 0.55;
+      var g = actx.createGain();
+      var t = actx.currentTime;
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(0.55, t + 0.12);
+      g.gain.setValueAtTime(0.55, t + 2.3);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      src.connect(bp); bp.connect(g); g.connect(actx.destination);
+      src.start(t); src.stop(t + dur);
+    }catch(e){ /* o som é um extra */ }
+  }
+
+  function confetti(){
+    if(reduz) return;
+    var box = document.getElementById('conf');
+    var cores = ['#44743F', '#F5C63D', '#8B8F86', '#FFFFFF', '#2A2E28'];
+    for(var i = 0; i < 80; i++){
+      var c = document.createElement('i');
+      if(Math.random() < 0.24){
+        c.className = 'pata';
+      }else{
+        c.style.background = cores[(Math.random() * cores.length) | 0];
+      }
+      c.style.left = (Math.random() * 100) + 'vw';
+      c.style.setProperty('--x', (Math.random() * 150 - 75) + 'px');
+      c.style.animationDuration = (2.4 + Math.random() * 2) + 's';
+      c.style.animationDelay = (Math.random() * 0.35) + 's';
+      box.appendChild(c);
+      (function(el){ setTimeout(function(){ el.remove(); }, 5200); })(c);
+    }
+  }
+
+  var btn = document.getElementById('abrir');
+  btn.addEventListener('click', function(){
+    var pag = document.getElementById('pagina');
+    pag.hidden = false;
+    btn.disabled = true;
+    btn.textContent = 'Revista aberta';
+    palmas();
+    confetti();
+    pag.scrollIntoView({behavior: reduz ? 'auto' : 'smooth', block:'nearest'});
+  });
+})();
+</script>
+</body>
+</html>
