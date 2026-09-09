@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#C9C6BE">
+<style>:root{color-scheme:light}body{margin:0;font:14px system-ui,sans-serif;background:#faf9f7}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Rute 2026.9.9</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Silkscreen:wght@400;700&display=swap">
+<style>
+  :root{
+    color-scheme: light;
+    --paper:#C9C6BE;
+    --chrome:#FBFAF7;
+    --ink:#17161A;
+    --ink-soft:#57535F;
+    --rose:#C0405C;
+    --amber:#DE9526;
+    --mint:#3B8A6E;
+    --azul:#14509B;
+    --mono:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+    --px:"Silkscreen", "Courier New", monospace;
+    --serif:"Newsreader", Georgia, "Times New Roman", serif;
+  }
+
+  body{
+    background-color:var(--paper);
+    background-image:
+      linear-gradient(45deg, rgba(23,22,26,.11) 25%, transparent 25%, transparent 75%, rgba(23,22,26,.11) 75%),
+      linear-gradient(45deg, rgba(23,22,26,.11) 25%, transparent 25%, transparent 75%, rgba(23,22,26,.11) 75%);
+    background-size:4px 4px;
+    background-position:0 0, 2px 2px;
+    color:var(--ink);
+    font-family:var(--mono);
+    font-size:13px;
+    min-height:100vh;
+    padding-bottom:52px;
+  }
+
+  /* barra de menus */
+  .menubar{
+    position:sticky; top:0; z-index:50;
+    display:flex; align-items:center; gap:18px;
+    padding:0 10px; height:28px;
+    background:var(--chrome);
+    border-bottom:2px solid var(--ink);
+    font-family:var(--px); font-size:12px;
+  }
+  .menubar .glyph{display:flex; align-items:center; margin-right:-4px}
+  .menubar .grow{margin-left:auto}
+  .menubar .clock{color:var(--ink-soft)}
+  .snd{
+    font-family:var(--px); font-size:12px; line-height:1;
+    border:2px solid var(--ink); background:var(--chrome); color:var(--ink);
+    padding:3px 7px; cursor:pointer;
+  }
+  .snd[aria-pressed="true"]{background:var(--ink); color:var(--chrome)}
+  .snd:focus-visible{outline:2px dashed var(--rose); outline-offset:3px}
+
+  /* janelas */
+  .desktop{padding:34px 16px 0; display:flex; flex-direction:column; align-items:center; gap:30px}
+
+  .win{
+    width:100%; max-width:524px;
+    background:var(--chrome);
+    border:2px solid var(--ink);
+    box-shadow:5px 5px 0 var(--ink);
+    animation:open .2s steps(3) both;
+  }
+  @keyframes open{from{opacity:0; transform:translateY(7px)} to{opacity:1; transform:none}}
+
+  .titlebar{
+    display:flex; align-items:center; gap:8px;
+    padding:5px 6px;
+    border-bottom:2px solid var(--ink);
+    background:repeating-linear-gradient(to bottom, var(--ink) 0 1px, var(--chrome) 1px 3px);
+  }
+  .closebox{width:11px; height:11px; border:2px solid var(--ink); background:var(--chrome); flex:none}
+  .titlebar .t{
+    margin:0 auto; padding:1px 10px; background:var(--chrome);
+    font-family:var(--px); font-weight:400; font-size:12px;
+  }
+  .titlebar .pad{width:11px; flex:none}
+
+  .pane{padding:18px}
+
+  /* instalador */
+  .head{display:flex; align-items:baseline; justify-content:space-between; gap:14px; margin-bottom:14px}
+  .head .name{font-family:var(--px); font-size:16px}
+  .meta{color:var(--ink-soft); font-size:11.5px; white-space:nowrap}
+
+  .pbar{display:flex; gap:2px; height:16px; padding:2px; border:2px solid var(--ink); background:var(--chrome)}
+  .pbar i{flex:1}
+  .pbar i.on{background:var(--ink)}
+
+  .log{margin-top:15px; min-height:150px; line-height:1.85; font-size:12.5px; color:var(--ink-soft)}
+  .log b{font-weight:500; color:var(--ink)}
+
+  /* notas da versão */
+  .verline{
+    display:flex; align-items:baseline; justify-content:space-between; gap:14px;
+    padding-bottom:12px; margin-bottom:15px; border-bottom:1px solid rgba(23,22,26,.3);
+  }
+  .verline .v{font-family:var(--px); font-size:16px}
+  .sect{font-family:var(--px); font-size:12px; letter-spacing:.05em; margin:17px 0 8px}
+  .sect.first{margin-top:0}
+  ul.changes{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:7px}
+  ul.changes li{display:flex; gap:10px; line-height:1.55; font-size:12.5px}
+  ul.changes .m{flex:none; width:9px; font-weight:500}
+  .m.add{color:var(--mint)}
+  .m.up{color:var(--amber)}
+  .m.fix{color:var(--ink)}
+  .m.known{color:var(--rose)}
+  li.known span:last-child{color:var(--ink-soft)}
+
+  /* botões */
+  .actions{margin-top:20px; display:flex; justify-content:flex-end; gap:10px; flex-wrap:wrap}
+  .actions.center{justify-content:center}
+  .btn{
+    font-family:var(--px); font-size:12px; color:var(--ink);
+    background:var(--chrome); border:2px solid var(--ink);
+    padding:10px 15px; cursor:pointer;
+    box-shadow:3px 3px 0 var(--ink);
+    outline-offset:3px;
+  }
+  .btn.default{outline:2px solid var(--ink)}
+  .btn:active{transform:translate(3px,3px); box-shadow:none}
+  .btn:focus-visible{outline:2px dashed var(--rose); outline-offset:4px}
+  .btn[disabled]{opacity:.4; cursor:default}
+  .btn[disabled]:active{transform:none; box-shadow:3px 3px 0 var(--ink)}
+
+  /* bolo */
+  .cakewrap{display:flex; justify-content:center; padding:2px 0}
+  svg.cake{width:290px; height:auto; max-width:100%}
+  .flame{transform-origin:110px 34px; animation:flick .45s steps(2) infinite alternate}
+  .flame.out{display:none}
+  @keyframes flick{from{transform:scaleX(.9)} to{transform:scaleX(1.08) scaleY(.94)}}
+  .smoke{stroke-dasharray:46; stroke-dashoffset:46; opacity:0}
+  .smoke.go{animation:puff 1.6s ease-out forwards}
+  @keyframes puff{
+    5%{opacity:.85}
+    35%{stroke-dashoffset:0; opacity:.85}
+    100%{stroke-dashoffset:-46; opacity:0}
+  }
+  .caketext{text-align:center; margin:12px 0 0; color:var(--ink-soft); font-size:12.5px; line-height:1.6}
+  .dog{transition:transform .55s ease}
+  .dog.lean{transform:translateX(-8px)}
+
+  /* caixa de diálogo */
+  #overlay{
+    position:fixed; inset:0; z-index:90;
+    background:rgba(23,22,26,.42);
+    display:grid; place-items:center; padding:20px;
+  }
+  .alert{
+    width:100%; max-width:432px;
+    background:var(--chrome); border:2px solid var(--ink);
+    box-shadow:6px 6px 0 var(--ink);
+    padding:20px; display:flex; gap:16px;
+    animation:open .16s steps(2) both;
+  }
+  .alert .ico{flex:none}
+  .alert .txt{flex:1; min-width:0}
+  .alert h4{font-family:var(--px); font-size:12px; letter-spacing:.05em; margin:0 0 10px}
+  .alert p{margin:0; font-size:13px; line-height:1.62; color:var(--ink-soft)}
+  .alert p em{font-style:normal; color:var(--ink)}
+
+  .pending{margin-top:18px; display:flex; justify-content:flex-start}
+  .pending .btn{display:flex; align-items:center; gap:8px; padding:8px 12px}
+  .pending .blip{width:7px; height:7px; background:var(--rose); flex:none}
+
+  /* carta */
+  .letter h3{
+    font-family:var(--serif); font-weight:500; font-size:29px; line-height:1.14;
+    margin:0 0 15px; letter-spacing:-.012em; text-wrap:balance;
+  }
+  .letter p{font-family:var(--serif); font-size:19px; line-height:1.62; margin:0 0 15px; max-width:34em}
+  .letter .sign{font-family:var(--serif); font-style:italic; font-size:19px; margin:22px 0 0}
+  .filemeta{
+    margin-top:20px; padding-top:11px; border-top:1px solid rgba(23,22,26,.3);
+    font-size:11px; color:var(--ink-soft);
+  }
+
+  .footer{
+    margin:30px auto 0; max-width:524px;
+    font-family:var(--px); font-size:12px; color:var(--ink-soft); text-align:center;
+  }
+
+  /* confetti */
+  #confetti{position:fixed; inset:0; pointer-events:none; z-index:80; overflow:hidden}
+  #confetti i{position:absolute; top:-24px; width:7px; height:7px; animation:fall linear forwards}
+  #confetti i.paw, #confetti i.heart{
+    width:13px; height:13px;
+    background-repeat:no-repeat; background-position:center; background-size:contain;
+  }
+  #confetti i.paw{
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%2317161A'%3E%3Ccircle cx='6' cy='5' r='2.6'/%3E%3Ccircle cx='12' cy='4' r='2.6'/%3E%3Ccircle cx='16.5' cy='8.5' r='2.4'/%3E%3Ccircle cx='3.5' cy='10' r='2.4'/%3E%3Cellipse cx='10' cy='14' rx='5.4' ry='4.6'/%3E%3C/svg%3E");
+  }
+  #confetti i.heart{
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23C0405C'%3E%3Cpath d='M10 17.6 2.5 10.1a4.6 4.6 0 1 1 7.5-5.3 4.6 4.6 0 1 1 7.5 5.3Z'/%3E%3C/svg%3E");
+  }
+  @keyframes fall{to{transform:translate3d(var(--x), 108vh, 0) rotate(540deg)}}
+
+  @media (max-width:520px){
+    .desktop{padding:24px 12px 0; gap:24px}
+    .pane{padding:15px 14px 17px}
+    .letter h3{font-size:25px}
+    .letter p, .letter .sign{font-size:17.5px}
+    .win{box-shadow:4px 4px 0 var(--ink)}
+    .menubar{gap:13px}
+    .head{flex-direction:column; gap:3px}
+    .alert{padding:16px; gap:13px; box-shadow:4px 4px 0 var(--ink)}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.001ms !important; animation-iteration-count:1 !important}
+  }
+</style>
+
+<div class="menubar">
+  <span class="glyph" aria-hidden="true">
+    <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+      <path d="M2 13h11V7.5H2V13Z" fill="#17161A"/>
+      <path d="M7.5 6V3.4" stroke="#17161A" stroke-width="1.5"/>
+      <path d="M7.5 2.9c1.2-.9.6-2.1 0-2.7-.8.8-1.1 1.8 0 2.7Z" fill="#17161A"/>
+    </svg>
+  </span>
+  <span>Ficheiro</span>
+  <span>Editar</span>
+  <span>Especial</span>
+  <span class="grow clock">qua 9 set 2026</span>
+  <button class="snd" id="snd" type="button" aria-pressed="true">som</button>
+</div>
+
+<main class="desktop">
+
+  <section class="win" id="w-install">
+    <div class="titlebar"><span class="closebox"></span><h2 class="t">instalador_rute</h2><span class="pad"></span></div>
+    <div class="pane">
+      <div class="head">
+        <span class="name">Rute 2026.9.9</span>
+        <span class="meta">atualização anual &middot; 1 unidade</span>
+      </div>
+      <div class="pbar" id="pbar" role="progressbar" aria-label="Progresso da instalação" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+      <div class="log" id="log" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section class="win" id="w-notes" hidden>
+    <div class="titlebar"><span class="closebox"></span><h2 class="t">notas-da-versao.txt</h2><span class="pad"></span></div>
+    <div class="pane">
+      <div class="verline">
+        <span class="v">2026.9.9</span>
+        <span class="meta">lançada a 9 de setembro</span>
+      </div>
+
+      <p class="sect first">Novidades</p>
+      <ul class="changes">
+        <li><span class="m add">+</span><span>Novo ano desbloqueado, sem custos adicionais.</span></li>
+        <li><span class="m add">+</span><span>Modo <b>hoje o dia é meu</b> ativo durante 24 horas.</span></li>
+        <li><span class="m add">+</span><span>Calendário de festivais para 2027 disponível. Falta estrear a pulseira nova.</span></li>
+      </ul>
+
+      <p class="sect">Melhorias</p>
+      <ul class="changes">
+        <li><span class="m up">&#8593;</span><span>+10 charme. Já vinha alto de origem.</span></li>
+        <li><span class="m up">&#8593;</span><span>+100 motivos para comer bolo.</span></li>
+        <li><span class="m up">&#8593;</span><span>Deteção de cães melhorada: identifica um a 200 metros e muda de passeio sozinha.</span></li>
+        <li><span class="m up">&#8593;</span><span>Deslocações do Calvão continuam a contar a dobrar para o estatuto de lenda.</span></li>
+      </ul>
+
+      <p class="sect">Corrigido</p>
+      <ul class="changes">
+        <li><span class="m fix">&#10003;</span><span>Deixou de ser preciso arranjar desculpa para a segunda fatia.</span></li>
+        <li><span class="m fix">&#10003;</span><span>Corrigido o erro de dizer &ldquo;só faço festinhas a este&rdquo; e acabar a fazer a todos.</span></li>
+        <li><span class="m fix">&#10003;</span><span>Corrigida a contagem de pulseiras. Já não cabem todas no braço.</span></li>
+      </ul>
+
+      <p class="sect">Problemas conhecidos</p>
+      <ul class="changes">
+        <li class="known"><span class="m known">!</span><span>Fidelidade ao FC Porto: não é possível desinstalar. O autor é do Benfica e já desistiu de tentar.</span></li>
+        <li class="known"><span class="m known">!</span><span>Continua a não ser possível adiar as velas. Sem correção prevista.</span></li>
+        <li class="known"><span class="m known">!</span><span>Voo LIS &rarr; ??? por marcar desde julho. Estado: em aberto. Companhia: a combinar.</span></li>
+        <li class="known"><span class="m known">!</span><span>Bilhete dourado ainda por usar. Válido para: digo-te pessoalmente.</span></li>
+      </ul>
+
+      <div class="actions">
+        <button class="btn default" id="toCake" type="button">Abrir bolo.app</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="win" id="w-cake" hidden>
+    <div class="titlebar"><span class="closebox"></span><h2 class="t">bolo.app</h2><span class="pad"></span></div>
+    <div class="pane">
+      <div class="cakewrap">
+        <svg class="cake" viewBox="0 0 300 152" role="img" aria-label="Um bolo com uma vela acesa e um cão de cachecol azul sentado a olhar para ele">
+          <g class="dog" id="dogG" fill="#17161A">
+            <path d="M279 101q17-4 8-19" stroke="#17161A" stroke-width="7" fill="none" stroke-linecap="round"/>
+            <ellipse cx="262" cy="105" rx="19" ry="19"/>
+            <ellipse cx="243" cy="110" rx="11" ry="14"/>
+            <ellipse cx="234" cy="120" rx="9" ry="4"/>
+            <ellipse cx="241" cy="94" rx="9" ry="9"/>
+            <ellipse cx="248" cy="70" rx="6.5" ry="11"/>
+            <circle cx="238" cy="78" r="14"/>
+            <ellipse cx="222" cy="84" rx="10" ry="6"/>
+            <circle cx="233" cy="75" r="2.3" fill="#FBFAF7"/>
+            <path d="M230 93q11 7 22 0v8q-11 7-22 0z" fill="#14509B" stroke="#17161A" stroke-width="1.8" stroke-linejoin="round"/>
+            <path d="M233 101l-3 15h9l-2-15z" fill="#14509B" stroke="#17161A" stroke-width="1.8" stroke-linejoin="round"/>
+            <path d="M237 96.5v8.4M244 96v8" stroke="#FBFAF7" stroke-width="1.7"/>
+          </g>
+          <path class="smoke" d="M110 34c-7-6 6-11 0-18-5-6 3-9 3-9" stroke="#57535F" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <g id="flameG" class="flame">
+            <path d="M110 42c8-6 6-15 0-22-6 7-8 16 0 22Z" fill="#DE9526" stroke="#17161A" stroke-width="2" stroke-linejoin="round"/>
+          </g>
+          <rect x="105" y="42" width="10" height="26" fill="#FBFAF7" stroke="#17161A" stroke-width="2"/>
+          <path d="M105 50l10-6M105 60l10-6" stroke="#17161A" stroke-width="1.5"/>
+          <path d="M30 68h160v16q-10 8-20 0-10-8-20 0-10 8-20 0-10-8-20 0-10 8-20 0-10-8-20 0-10 8-20 0-10-8-20 0Z" fill="#FBFAF7" stroke="#17161A" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M30 84v40h160V84" fill="#FBFAF7" stroke="#17161A" stroke-width="2"/>
+          <path d="M70 92v26M110 92v26M150 92v26" stroke="#57535F" stroke-width="1.5"/>
+          <path d="M14 124h272" stroke="#17161A" stroke-width="2" stroke-linecap="round"/>
+          <path d="M22 124q88 18 176 0" stroke="#17161A" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <p class="caketext" id="cakeText">Uma vela chega. O resto do trabalho está no bolo.<br>O cão está só a fazer companhia. Diz ele.</p>
+      <div class="actions center">
+        <button class="btn default" id="blow" type="button">Soprar a vela</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="win letter" id="w-letter" hidden>
+    <div class="titlebar"><span class="closebox"></span><h2 class="t">para-a-rute.txt</h2><span class="pad"></span></div>
+    <div class="pane">
+      <h3>Parabéns, Rute.</h3>
+      <p>
+        Espero que tenhas um dia mesmo bom, cheio de coisas simples,
+        pessoas de quem gostas e um bolo à altura da ocasião.
+      </p>
+      <p>
+        Que apareça um cão pelo caminho só para teres a quem fazer festas,
+        que o Calvão e o Porto ganhem no mesmo fim de semana,
+        e que sobre bolo para a segunda fatia.
+      </p>
+      <p>Aproveita muito o teu dia.</p>
+      <p class="sign">— Paulo</p>
+      <div class="pending" id="pending" hidden>
+        <button class="btn" id="reopenKiss" type="button"><span class="blip" aria-hidden="true"></span>1 bilhete por usar</button>
+      </div>
+      <p class="filemeta">guardado a 9 de setembro de 2026 &middot; 1 destinatário &middot; sem cópia de segurança, é só teu</p>
+    </div>
+  </section>
+
+  <p class="footer">Birthday OS &middot; edição limitada de 09.09.2026</p>
+</main>
+
+<div id="overlay" role="dialog" aria-modal="true" aria-labelledby="alertTitle" hidden>
+  <div class="alert">
+    <div class="ico" aria-hidden="true">
+      <svg viewBox="0 0 44 38" width="44" height="38">
+        <rect x="2" y="5" width="40" height="26" fill="#FBFAF7" stroke="#17161A" stroke-width="2"/>
+        <path d="M2 5l20 16L42 5" fill="none" stroke="#17161A" stroke-width="2"/>
+        <path d="M22 35.6 15.4 29a4 4 0 1 1 6.6-4.6 4 4 0 1 1 6.6 4.6Z" fill="#C0405C" stroke="#17161A" stroke-width="1.6" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="txt" id="alertBody"></div>
+  </div>
+</div>
+
+<div id="confetti" aria-hidden="true"></div>
+
+<script>
+(function(){
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---- som ---- */
+  var soundOn = true, actx = null;
+  var sndBtn = document.getElementById('snd');
+  sndBtn.addEventListener('click', function(){
+    soundOn = !soundOn;
+    sndBtn.setAttribute('aria-pressed', String(soundOn));
+    sndBtn.textContent = soundOn ? 'som' : 'sem som';
+  });
+
+  function chime(notes){
+    if(!soundOn) return;
+    try{
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if(!AC) return;
+      if(!actx) actx = new AC();
+      if(actx.state === 'suspended') actx.resume();
+      (notes || [523.25, 659.25, 783.99, 1046.5]).forEach(function(f, i){
+        var o = actx.createOscillator(), g = actx.createGain(), t = actx.currentTime + i * 0.11;
+        o.type = 'triangle';
+        o.frequency.value = f;
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.exponentialRampToValueAtTime(0.16, t + 0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + 0.75);
+        o.connect(g); g.connect(actx.destination);
+        o.start(t); o.stop(t + 0.8);
+      });
+    }catch(e){ /* som é um extra; se falhar, a página continua igual */ }
+  }
+
+  /* ---- instalador ---- */
+  var SEGMENTS = 26;
+  var pbar = document.getElementById('pbar'), log = document.getElementById('log');
+  var segs = [];
+  for(var i = 0; i < SEGMENTS; i++){
+    var s = document.createElement('i');
+    pbar.appendChild(s);
+    segs.push(s);
+  }
+
+  var lines = [
+    '&rsaquo; A procurar a unidade RUTE&hellip;',
+    '&rsaquo; Unidade encontrada. Estado: excelente.',
+    '&rsaquo; A libertar espaço para bolo&hellip;',
+    '&rsaquo; A sincronizar com o Grupo Desportivo de Calvão&hellip;',
+    '&rsaquo; A restaurar histórico de pulseiras&hellip;',
+    '&rsaquo; A desativar obrigações não essenciais&hellip;',
+    '&rsaquo; A validar licença de aniversário&hellip;',
+    '<b>&rsaquo; Instalação concluída sem erros.</b>'
+  ];
+
+  function addLine(html){
+    var d = document.createElement('div');
+    d.innerHTML = html;
+    log.appendChild(d);
+  }
+
+  function fill(n){
+    for(var i = 0; i < SEGMENTS; i++) segs[i].classList.toggle('on', i < n);
+    pbar.setAttribute('aria-valuenow', Math.round(n / SEGMENTS * 100));
+  }
+
+  function reveal(el){
+    el.hidden = false;
+    if(!reduce) el.scrollIntoView({behavior:'smooth', block:'nearest'});
+  }
+
+  if(reduce){
+    lines.forEach(addLine);
+    fill(SEGMENTS);
+    document.getElementById('w-notes').hidden = false;
+  }else{
+    var step = 0, total = lines.length, per = 460;
+    var start = performance.now(), dur = total * per;
+
+    (function tick(now){
+      var p = Math.min(1, (now - start) / dur);
+      fill(Math.round(p * SEGMENTS));
+      if(p < 1) requestAnimationFrame(tick);
+    })(start);
+
+    var timer = setInterval(function(){
+      addLine(lines[step]);
+      step++;
+      if(step >= total){
+        clearInterval(timer);
+        setTimeout(function(){ reveal(document.getElementById('w-notes')); }, 520);
+      }
+    }, per);
+  }
+
+  /* ---- bolo ---- */
+  document.getElementById('toCake').addEventListener('click', function(){
+    this.disabled = true;
+    reveal(document.getElementById('w-cake'));
+  });
+
+  var blow = document.getElementById('blow');
+  blow.addEventListener('click', function(){
+    blow.disabled = true;
+    blow.textContent = 'Vela apagada';
+    document.getElementById('flameG').classList.add('out');
+    document.querySelector('.smoke').classList.add('go');
+    document.getElementById('dogG').classList.add('lean');
+    document.getElementById('cakeText').innerHTML = 'Pronto. Agora pede o que quiseres.<br>O cão já pediu o dele.';
+    chime();
+    confetti('festa');
+    setTimeout(function(){
+      reveal(document.getElementById('w-letter'));
+      setTimeout(openKiss, reduce ? 0 : 1700);
+    }, reduce ? 0 : 900);
+  });
+
+  /* ---- o beijinho ---- */
+  var overlay = document.getElementById('overlay');
+  var alertBody = document.getElementById('alertBody');
+  var pending = document.getElementById('pending');
+  var lastFocus = null;
+
+  var ASK =
+    '<h4 id="alertTitle">Bilhete por usar</h4>' +
+    '<p>Desde julho que está um bilhete dourado por usar. Válido para: ' +
+    '<em>digo-te pessoalmente</em>. Hoje digo aqui — era um beijinho. Aceitas?</p>' +
+    '<div class="actions"><button class="btn" id="kissNo" type="button">Agora não</button>' +
+    '<button class="btn default" id="kissYes" type="button">Aceito</button></div>';
+
+  var YES =
+    '<h4 id="alertTitle">Bilhete validado</h4>' +
+    '<p>Data: em breve. Lugar: a combinar — tal como estava escrito. ' +
+    '<em>Bom aniversário, Rute.</em></p>' +
+    '<div class="actions"><button class="btn default" id="kissClose" type="button">Fechar</button></div>';
+
+  var NO =
+    '<h4 id="alertTitle">Sem pressa</h4>' +
+    '<p>O bilhete não tem prazo de validade. Fica exatamente onde estava.</p>' +
+    '<div class="actions"><button class="btn default" id="kissClose" type="button">Fechar</button></div>';
+
+  function openKiss(){
+    lastFocus = document.activeElement;
+    alertBody.innerHTML = ASK;
+    overlay.hidden = false;
+    document.getElementById('kissYes').addEventListener('click', function(){
+      alertBody.innerHTML = YES;
+      bindClose();
+      chime([659.25, 880, 1174.7]);
+      confetti('beijo');
+      pending.hidden = true;
+    });
+    document.getElementById('kissNo').addEventListener('click', function(){
+      alertBody.innerHTML = NO;
+      bindClose();
+      pending.hidden = false;
+    });
+    document.getElementById('kissYes').focus();
+  }
+
+  function bindClose(){
+    var b = document.getElementById('kissClose');
+    b.addEventListener('click', closeKiss);
+    b.focus();
+  }
+
+  function closeKiss(){
+    overlay.hidden = true;
+    if(lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+
+  document.getElementById('reopenKiss').addEventListener('click', openKiss);
+
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && !overlay.hidden){
+      overlay.hidden = true;
+      if(!document.getElementById('kissClose')) pending.hidden = false;
+    }
+  });
+
+  /* ---- confetti ---- */
+  function confetti(mode){
+    var box = document.getElementById('confetti');
+    var colors = ['#17161A', '#C0405C', '#DE9526', '#3B8A6E', '#14509B', '#FBFAF7'];
+    var n = reduce ? 0 : (mode === 'beijo' ? 60 : 84);
+    for(var i = 0; i < n; i++){
+      var c = document.createElement('i');
+      var r = Math.random();
+      if(mode === 'beijo' && r < 0.62){
+        c.className = 'heart';
+      }else if(mode === 'festa' && r < 0.28){
+        c.className = 'paw';
+      }else{
+        c.style.background = colors[Math.floor(Math.random() * colors.length)];
+      }
+      c.style.left = (Math.random() * 100) + 'vw';
+      c.style.setProperty('--x', (Math.random() * 160 - 80) + 'px');
+      c.style.animationDuration = (2.4 + Math.random() * 2.1) + 's';
+      c.style.animationDelay = (Math.random() * 0.4) + 's';
+      box.appendChild(c);
+      (function(el){ setTimeout(function(){ el.remove(); }, 5400); })(c);
+    }
+  }
+})();
+</script>
+</body>
+</html>
