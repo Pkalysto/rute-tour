@@ -10,7 +10,7 @@
 <title>Revista Rute</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500;6..96,700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,700;1,6..96,400;1,6..96,500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
 <style>
   :root{
     color-scheme: light;
@@ -39,15 +39,26 @@
 
   .banca{max-width:580px; margin:0 auto; display:flex; flex-direction:column; gap:20px}
 
-  /* ---------- capa ---------- */
-  .capa{
+  /* ---------- folha comum ---------- */
+  .folha{
     background:var(--papel);
     border:1px solid var(--linha);
     box-shadow:0 14px 34px rgba(42,46,40,.13);
-    padding:20px 22px 24px;
     position:relative;
-    overflow:hidden;
   }
+
+  .rubrica{
+    font-size:9px; font-weight:700; letter-spacing:.2em;
+    color:var(--verde); text-transform:uppercase;
+  }
+
+  .folio{
+    position:absolute; right:16px; bottom:12px;
+    font-family:var(--display); font-size:12px; color:var(--cinza);
+  }
+
+  /* ---------- capa ---------- */
+  .capa{padding:20px 22px 24px; overflow:hidden}
 
   .cinta{
     display:flex; justify-content:space-between; gap:12px;
@@ -83,24 +94,14 @@
   }
   @keyframes baloico{from{transform:rotate(-9deg)} to{transform:rotate(-3deg)}}
 
-  .chamadas{
-    margin-top:26px;
-    display:grid; grid-template-columns:1fr 1fr; gap:18px 22px;
-  }
+  .chamadas{margin-top:22px; display:grid; grid-template-columns:1fr 1fr; gap:18px 22px}
   .chamada{display:flex; flex-direction:column; gap:5px}
   .chamada.destaque{grid-column:1 / -1; padding-bottom:16px; border-bottom:1.5px solid var(--tinta)}
-
-  .rubrica{
-    font-size:9px; font-weight:700; letter-spacing:.2em;
-    color:var(--verde); text-transform:uppercase;
-  }
   .chamada p{
     margin:0; font-weight:600; font-size:14.5px; line-height:1.3;
     letter-spacing:-.006em; text-wrap:balance;
   }
-  .chamada.destaque p{
-    font-size:clamp(21px, 5.6vw, 29px); font-weight:700; line-height:1.12;
-  }
+  .chamada.destaque p{font-size:clamp(21px, 5.6vw, 29px); font-weight:700; line-height:1.12}
   .marca{background:var(--amarelo-suave); box-shadow:0 0 0 3px var(--amarelo-suave)}
   .en{font-family:var(--display); font-style:italic; font-weight:500}
 
@@ -127,35 +128,71 @@
   .abrir:focus-visible{outline:2px solid var(--tinta); outline-offset:3px}
   .abrir[disabled]{background:var(--cinza); cursor:default}
 
-  /* ---------- página de dentro ---------- */
-  .pagina{
-    background:var(--papel);
-    border:1px solid var(--linha);
-    box-shadow:0 14px 34px rgba(42,46,40,.13);
-    padding:34px 30px 28px;
-    animation:abre .32s ease both;
-  }
+  /* ---------- interior ---------- */
+  #interior{display:flex; flex-direction:column; gap:20px}
+  #interior > *{animation:abre .3s ease both}
   @keyframes abre{from{opacity:0; transform:translateY(12px)} to{opacity:1; transform:none}}
 
-  .pagina .rubrica{margin-bottom:10px; display:block}
+  .pagina{padding:30px 28px 34px}
   .pagina h2{
     font-family:var(--display); font-weight:500;
-    font-size:clamp(30px, 8vw, 44px); line-height:1.05;
-    margin:0 0 20px; letter-spacing:-.02em; color:var(--verde);
+    font-size:clamp(26px, 6.6vw, 36px); line-height:1.08;
+    margin:11px 0 18px; letter-spacing:-.02em; color:var(--verde);
     text-wrap:balance;
   }
-  .pagina p{
-    font-family:var(--serif); font-size:18px; line-height:1.66;
-    margin:0 0 15px; max-width:34em;
+  .pagina p{font-family:var(--serif); font-size:17px; line-height:1.62; margin:0 0 14px; max-width:34em}
+
+  /* sumário */
+  .sumario ol{list-style:none; margin:14px 0 0; padding:0; display:flex; flex-direction:column}
+  .sumario li{
+    display:flex; align-items:baseline; gap:12px;
+    padding:11px 0; border-bottom:1px solid var(--linha);
   }
-  .pagina p.entrada::first-letter{
+  .sumario li:last-child{border-bottom:0}
+  .sumario .n{
+    font-family:var(--display); font-size:19px; color:var(--verde); flex:none;
+    width:32px;
+  }
+  .sumario .t{font-family:var(--serif); font-size:17px; flex:1}
+  .sumario .r{font-size:9px; font-weight:700; letter-spacing:.16em; color:var(--cinza); text-transform:uppercase; flex:none}
+
+  /* looks de moda */
+  .looks{display:flex; flex-direction:column; gap:18px; margin-top:6px}
+  .look{display:flex; gap:14px; align-items:flex-start}
+  .amostras{display:flex; gap:5px; flex:none; padding-top:3px}
+  .amostras i{width:19px; height:19px; border-radius:50%; border:1px solid rgba(42,46,40,.18); display:block}
+  .look h3{font-family:var(--sans); font-weight:700; font-size:12px; letter-spacing:.12em; margin:0 0 4px; text-transform:uppercase}
+  .look p{font-size:15.5px; margin:0}
+
+  /* escapadinhas */
+  .escapadas{display:flex; flex-direction:column; gap:16px; margin-top:6px}
+  .escapada{padding-left:15px; border-left:3px solid var(--verde-suave)}
+  .escapada h3{font-family:var(--display); font-weight:500; font-size:21px; margin:0 0 4px; color:var(--tinta)}
+  .escapada p{font-size:15.5px; margin:0 0 5px}
+  .escapada .quando{font-size:9px; font-weight:700; letter-spacing:.16em; color:var(--cinza); text-transform:uppercase}
+
+  /* wishlist */
+  .coisas{display:grid; grid-template-columns:1fr 1fr; gap:22px 18px; margin-top:8px}
+  .coisa{display:flex; flex-direction:column; gap:9px}
+  .coisa svg{width:100%; height:auto; max-width:120px; margin:0 auto; display:block}
+  .coisa p{font-size:14.5px; line-height:1.5; margin:0; text-align:center}
+
+  /* horóscopo */
+  .signo{
+    display:flex; align-items:center; gap:14px;
+    padding:14px 16px; background:var(--verde-suave); margin-top:6px;
+  }
+  .signo .glifo{font-family:var(--display); font-size:34px; color:var(--verde); line-height:1}
+  .signo div{font-size:14px; line-height:1.45}
+  .signo strong{font-weight:700}
+
+  /* carta */
+  .carta p.entrada::first-letter{
     float:left; font-family:var(--display); font-weight:700;
     font-size:3.5em; line-height:.78; padding:2px 9px 0 0; color:var(--verde);
   }
-  .pagina .assina{
-    font-family:var(--serif); font-style:italic; font-size:18px; margin-top:22px;
-  }
-  .pagina .creditos{
+  .carta .assina{font-family:var(--serif); font-style:italic; font-size:18px; margin-top:22px}
+  .carta .creditos{
     margin-top:26px; padding-top:13px; border-top:1px solid var(--linha);
     font-family:var(--sans); font-size:9px; font-weight:700;
     letter-spacing:.17em; color:var(--cinza); text-transform:uppercase;
@@ -184,10 +221,12 @@
     .chamadas{grid-template-columns:1fr; gap:15px}
     .selo{width:80px; height:80px; font-size:9.5px}
     .selo-linha{margin-top:12px}
-    .pagina{padding:26px 19px 22px}
-    .pagina p{font-size:17px}
+    .pagina{padding:24px 18px 30px}
+    .pagina p{font-size:16px}
     .base{flex-direction:column; align-items:flex-start; gap:12px}
     .base .nota{text-align:left}
+    .look{flex-direction:column; gap:8px}
+    .coisas{gap:20px 14px}
   }
 
   @media (prefers-reduced-motion:reduce){
@@ -199,7 +238,7 @@
 
 <div class="banca">
 
-  <article class="capa">
+  <article class="folha capa">
     <div class="cinta">
       <span>Setembro 2026</span>
       <span>N.&ordm; 1</span>
@@ -220,13 +259,18 @@
       </div>
 
       <div class="chamada">
-        <span class="rubrica">Hoje</span>
-        <p><span class="en">Best day ever</span> — o guia completo, hora a hora</p>
+        <span class="rubrica">Moda</span>
+        <p>Três <span class="en">looks</span> para um dia que é só teu</p>
       </div>
 
       <div class="chamada">
-        <span class="rubrica">Self care</span>
-        <p>A segunda fatia conta. Nós explicamos porquê</p>
+        <span class="rubrica">Escapadinhas</span>
+        <p>Fins de semana para marcar sem pensar muito</p>
+      </div>
+
+      <div class="chamada">
+        <span class="rubrica">Wishlist</span>
+        <p>Coisas bonitas, sem motivo nenhum</p>
       </div>
 
       <div class="chamada">
@@ -237,11 +281,6 @@
       <div class="chamada">
         <span class="rubrica">Desporto</span>
         <p>Calvão, casa e fora: a adepta n.&ordm; 1 fala</p>
-      </div>
-
-      <div class="chamada">
-        <span class="rubrica">Agenda</span>
-        <p>Festivais 2027 &middot; <span class="en">save the date</span></p>
       </div>
 
       <div class="chamada">
@@ -258,23 +297,167 @@
 
   <button class="abrir" id="abrir" type="button">Abrir a revista</button>
 
-  <article class="pagina" id="pagina" hidden>
-    <span class="rubrica">Carta da edição &middot; página 9</span>
-    <h2>Parabéns, Rute.</h2>
-    <p class="entrada">
-      Espero que tenhas um dia mesmo bom, cheio de coisas simples,
-      pessoas de quem gostas e um bolo à altura da ocasião.
-    </p>
-    <p>
-      Que apareça um cão pelo caminho só para teres a quem fazer festas,
-      que o Calvão e o Porto ganhem no mesmo fim de semana,
-      e que sobre bolo para a segunda fatia.
-    </p>
-    <p>Aproveita muito o teu dia.</p>
-    <p class="assina">— Paulo</p>
-    <p class="creditos">Edição de 9 de setembro de 2026 &middot; tiragem de um exemplar</p>
-  </article>
+  <div id="interior" hidden>
 
+    <article class="folha pagina sumario">
+      <span class="rubrica">Nesta edição</span>
+      <h2>Sumário</h2>
+      <ol>
+        <li><span class="n">03</span><span class="t">Três looks para um dia que é só teu</span><span class="r">Moda</span></li>
+        <li><span class="n">05</span><span class="t">Escapadinhas para marcar sem pensar muito</span><span class="r">Viagem</span></li>
+        <li><span class="n">07</span><span class="t">Coisas bonitas, sem motivo nenhum</span><span class="r">Wishlist</span></li>
+        <li><span class="n">08</span><span class="t">Virgem: o teu ano, lido à pressa</span><span class="r">Horóscopo</span></li>
+        <li><span class="n">09</span><span class="t">Carta da edição</span><span class="r">Última</span></li>
+      </ol>
+      <span class="folio">02</span>
+    </article>
+
+    <article class="folha pagina">
+      <span class="rubrica">Moda</span>
+      <h2>Três looks para um dia que é só teu</h2>
+      <div class="looks">
+        <div class="look">
+          <div class="amostras" aria-hidden="true">
+            <i style="background:#8B8F86"></i><i style="background:#FFFFFF"></i><i style="background:#44743F"></i>
+          </div>
+          <div>
+            <h3>The easy one</h3>
+            <p>Ganga, ténis brancos e aquela camisa que já era do outono passado. Zero esforço, e no entanto.</p>
+          </div>
+        </div>
+
+        <div class="look">
+          <div class="amostras" aria-hidden="true">
+            <i style="background:#44743F"></i><i style="background:#F5C63D"></i><i style="background:#FFFFFF"></i>
+          </div>
+          <div>
+            <h3>Game day</h3>
+            <p>Cachecol, casaco a sério e as botas que aguentam a bancada. Em Calvão não há dress code, mas há dignidade.</p>
+          </div>
+        </div>
+
+        <div class="look">
+          <div class="amostras" aria-hidden="true">
+            <i style="background:#F5C63D"></i><i style="background:#FBEBB2"></i><i style="background:#8B8F86"></i>
+          </div>
+          <div>
+            <h3>Birthday girl</h3>
+            <p>O vestido que estava à espera de uma desculpa. Hoje há desculpa.</p>
+          </div>
+        </div>
+      </div>
+      <span class="folio">03</span>
+    </article>
+
+    <article class="folha pagina">
+      <span class="rubrica">Escapadinhas</span>
+      <h2>Fins de semana para marcar sem pensar muito</h2>
+      <div class="escapadas">
+        <div class="escapada">
+          <h3>Gerês</h3>
+          <p>Acordar com barulho de água e passar o dia inteiro sem olhar para um ecrã. Levar botas, não levar planos.</p>
+          <span class="quando">Duas noites &middot; sem pressa</span>
+        </div>
+        <div class="escapada">
+          <h3>Costa Nova</h3>
+          <p>As casas às riscas, o mar frio de propósito e uma sopa às três da tarde porque sim.</p>
+          <span class="quando">Uma noite &middot; decidido à sexta</span>
+        </div>
+        <div class="escapada">
+          <h3>Douro</h3>
+          <p>Comboio até ao Pinhão, janela do lado direito. O resto resolve-se por lá.</p>
+          <span class="quando">Fim de semana &middot; comboio, não carro</span>
+        </div>
+      </div>
+      <span class="folio">05</span>
+    </article>
+
+    <article class="folha pagina">
+      <span class="rubrica">Wishlist</span>
+      <h2>Coisas bonitas, sem motivo nenhum</h2>
+      <div class="coisas">
+
+        <div class="coisa">
+          <svg viewBox="0 0 100 100" role="img" aria-label="Frasco de perfume">
+            <rect x="38" y="14" width="24" height="16" rx="3" fill="#44743F" stroke="#2A2E28" stroke-width="2.5"/>
+            <rect x="43" y="29" width="14" height="12" fill="#F7F5ED" stroke="#2A2E28" stroke-width="2.5"/>
+            <rect x="26" y="40" width="48" height="46" rx="6" fill="#FBEBB2" stroke="#2A2E28" stroke-width="2.5"/>
+            <rect x="38" y="55" width="24" height="17" rx="2" fill="#F7F5ED" stroke="#2A2E28" stroke-width="2"/>
+          </svg>
+          <p>Um perfume novo. O antigo já toda a gente conhece.</p>
+        </div>
+
+        <div class="coisa">
+          <svg viewBox="0 0 100 100" role="img" aria-label="Óculos de sol">
+            <rect x="10" y="40" width="34" height="26" rx="12" fill="#DBE7D1" stroke="#2A2E28" stroke-width="2.5"/>
+            <rect x="56" y="40" width="34" height="26" rx="12" fill="#DBE7D1" stroke="#2A2E28" stroke-width="2.5"/>
+            <path d="M44 48q6-5 12 0" fill="none" stroke="#2A2E28" stroke-width="2.5"/>
+            <path d="M10 46L2 39M90 46l8-7" fill="none" stroke="#2A2E28" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+          <p>Óculos escuros. Para o sol e para as perguntas.</p>
+        </div>
+
+        <div class="coisa">
+          <svg viewBox="0 0 100 100" role="img" aria-label="Vela perfumada">
+            <path d="M50 33c7-6 5-13 0-19-5 6-7 13 0 19Z" fill="#F5C63D" stroke="#2A2E28" stroke-width="2.5" stroke-linejoin="round"/>
+            <path d="M50 34v8" stroke="#2A2E28" stroke-width="2.5"/>
+            <rect x="28" y="42" width="44" height="44" rx="5" fill="#DBE7D1" stroke="#2A2E28" stroke-width="2.5"/>
+            <path d="M28 52h44" stroke="#2A2E28" stroke-width="2"/>
+          </svg>
+          <p>Uma vela boa. Casa a cheirar a domingo.</p>
+        </div>
+
+        <div class="coisa">
+          <svg viewBox="0 0 100 100" role="img" aria-label="Mala de mão">
+            <path d="M36 44q14-22 28 0" fill="none" stroke="#2A2E28" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M22 44h56l-6 42H28z" fill="#F5C63D" stroke="#2A2E28" stroke-width="2.5" stroke-linejoin="round"/>
+            <rect x="44" y="52" width="12" height="9" rx="2" fill="#F7F5ED" stroke="#2A2E28" stroke-width="2"/>
+          </svg>
+          <p>Mala pequena. Só cabe o essencial — e ainda bem.</p>
+        </div>
+
+      </div>
+      <span class="folio">07</span>
+    </article>
+
+    <article class="folha pagina">
+      <span class="rubrica">Horóscopo</span>
+      <h2>Virgem: o teu ano, lido à pressa</h2>
+      <div class="signo">
+        <span class="glifo" aria-hidden="true">&#9805;</span>
+        <div><strong>Virgem</strong> &middot; 9 de setembro<br>Regente: a organização dos outros</div>
+      </div>
+      <p style="margin-top:16px">
+        Este ano insiste em ser bom, mesmo nos dias em que decidires o contrário.
+        Vais continuar a resolver a vida de toda a gente — mas com mais jeito
+        para dizer que não, o que já é um progresso considerável.
+      </p>
+      <p>
+        Setembro traz bolo. Outubro traz uma decisão pequena que se vai revelar
+        maior do que parecia. E há um cão, algures pelo caminho, à tua espera.
+      </p>
+      <span class="folio">08</span>
+    </article>
+
+    <article class="folha pagina carta">
+      <span class="rubrica">Carta da edição</span>
+      <h2>Parabéns, Rute.</h2>
+      <p class="entrada">
+        Espero que tenhas um dia mesmo bom, cheio de coisas simples,
+        pessoas de quem gostas e um bolo à altura da ocasião.
+      </p>
+      <p>
+        Que apareça um cão pelo caminho só para teres a quem fazer festas,
+        que o Calvão e o Porto ganhem no mesmo fim de semana,
+        e que sobre bolo para a segunda fatia.
+      </p>
+      <p>Aproveita muito o teu dia.</p>
+      <p class="assina">— Paulo</p>
+      <p class="creditos">Edição de 9 de setembro de 2026 &middot; tiragem de um exemplar</p>
+      <span class="folio">09</span>
+    </article>
+
+  </div>
 </div>
 
 <div id="conf" aria-hidden="true"></div>
@@ -283,7 +466,6 @@
 (function(){
   var reduz = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* código de barras */
   var cod = document.getElementById('codigo');
   for(var i = 0; i < 34; i++){
     var b = document.createElement('i');
@@ -292,7 +474,6 @@
     cod.appendChild(b);
   }
 
-  /* som */
   var ligado = true, actx = null;
   var btnSom = document.getElementById('som');
   btnSom.addEventListener('click', function(){
@@ -321,10 +502,10 @@
           d[t0 + j] += (Math.random() * 2 - 1) * amp * Math.exp(-j / (dec * 0.32));
         }
       }
-      for(var i = 0; i < len; i++){
-        var env = Math.min(1, i / (sr * 0.2)) * Math.min(1, (len - i) / (sr * 1.1));
-        var v = d[i] * 0.45 + (Math.random() * 2 - 1) * 0.13 * env;
-        d[i] = v > 1 ? 1 : (v < -1 ? -1 : v);
+      for(var k = 0; k < len; k++){
+        var env = Math.min(1, k / (sr * 0.2)) * Math.min(1, (len - k) / (sr * 1.1));
+        var v = d[k] * 0.45 + (Math.random() * 2 - 1) * 0.13 * env;
+        d[k] = v > 1 ? 1 : (v < -1 ? -1 : v);
       }
 
       var src = actx.createBufferSource(); src.buffer = buf;
@@ -363,13 +544,16 @@
 
   var btn = document.getElementById('abrir');
   btn.addEventListener('click', function(){
-    var pag = document.getElementById('pagina');
-    pag.hidden = false;
+    var dentro = document.getElementById('interior');
+    dentro.hidden = false;
+    [].forEach.call(dentro.children, function(el, i){
+      el.style.animationDelay = (i * 0.07) + 's';
+    });
     btn.disabled = true;
     btn.textContent = 'Revista aberta';
     palmas();
     confetti();
-    pag.scrollIntoView({behavior: reduz ? 'auto' : 'smooth', block:'nearest'});
+    dentro.scrollIntoView({behavior: reduz ? 'auto' : 'smooth', block:'start'});
   });
 })();
 </script>
