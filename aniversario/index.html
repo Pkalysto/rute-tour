@@ -170,9 +170,6 @@
   .alert p{margin:0; font-size:13px; line-height:1.62; color:var(--ink-soft)}
   .alert p em{font-style:normal; color:var(--ink)}
 
-  .pending{margin-top:18px; display:flex; justify-content:flex-start}
-  .pending .btn{display:flex; align-items:center; gap:8px; padding:8px 12px}
-  .pending .blip{width:7px; height:7px; background:var(--rose); flex:none}
 
   /* carta */
   .letter h3{
@@ -194,15 +191,10 @@
   /* confetti */
   #confetti{position:fixed; inset:0; pointer-events:none; z-index:80; overflow:hidden}
   #confetti i{position:absolute; top:-24px; width:7px; height:7px; animation:fall linear forwards}
-  #confetti i.paw, #confetti i.heart{
+  #confetti i.paw{
     width:13px; height:13px;
     background-repeat:no-repeat; background-position:center; background-size:contain;
-  }
-  #confetti i.paw{
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%2317161A'%3E%3Ccircle cx='6' cy='5' r='2.6'/%3E%3Ccircle cx='12' cy='4' r='2.6'/%3E%3Ccircle cx='16.5' cy='8.5' r='2.4'/%3E%3Ccircle cx='3.5' cy='10' r='2.4'/%3E%3Cellipse cx='10' cy='14' rx='5.4' ry='4.6'/%3E%3C/svg%3E");
-  }
-  #confetti i.heart{
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23C0405C'%3E%3Cpath d='M10 17.6 2.5 10.1a4.6 4.6 0 1 1 7.5-5.3 4.6 4.6 0 1 1 7.5 5.3Z'/%3E%3C/svg%3E");
   }
   @keyframes fall{to{transform:translate3d(var(--x), 108vh, 0) rotate(540deg)}}
 
@@ -274,6 +266,7 @@
         <li><span class="m add">+</span><span>Novo ano desbloqueado, sem custos adicionais.</span></li>
         <li><span class="m add">+</span><span>Modo <b>hoje o dia é meu</b> ativo durante 24 horas.</span></li>
         <li><span class="m add">+</span><span>Calendário de festivais para 2027 disponível. Falta estrear a pulseira nova.</span></li>
+        <li><span class="m add">+</span><span>Próximo destino ainda por escolher. O mapa está todo em aberto.</span></li>
       </ul>
 
       <p class="sect">Melhorias</p>
@@ -295,8 +288,6 @@
       <ul class="changes">
         <li class="known"><span class="m known">!</span><span>Fidelidade ao FC Porto: não é possível desinstalar. O autor é do Benfica e já desistiu de tentar.</span></li>
         <li class="known"><span class="m known">!</span><span>Continua a não ser possível adiar as velas. Sem correção prevista.</span></li>
-        <li class="known"><span class="m known">!</span><span>Voo LIS &rarr; ??? por marcar desde julho. Estado: em aberto. Companhia: a combinar.</span></li>
-        <li class="known"><span class="m known">!</span><span>Bilhete dourado ainda por usar. Válido para: digo-te pessoalmente.</span></li>
       </ul>
 
       <div class="actions">
@@ -359,9 +350,6 @@
       </p>
       <p>Aproveita muito o teu dia.</p>
       <p class="sign">— Paulo</p>
-      <div class="pending" id="pending" hidden>
-        <button class="btn" id="reopenKiss" type="button"><span class="blip" aria-hidden="true"></span>1 bilhete por usar</button>
-      </div>
       <p class="filemeta">guardado a 9 de setembro de 2026 &middot; 1 destinatário &middot; sem cópia de segurança, é só teu</p>
     </div>
   </section>
@@ -397,13 +385,57 @@
     sndBtn.textContent = soundOn ? 'som' : 'sem som';
   });
 
+  function ensureCtx(){
+    var AC = window.AudioContext || window.webkitAudioContext;
+    if(!AC) return null;
+    if(!actx) actx = new AC();
+    if(actx.state === 'suspended') actx.resume();
+    return actx;
+  }
+
+  /* palmas e vozes: ruído moldado, sem ficheiros externos */
+  function applause(){
+    if(!soundOn) return;
+    try{
+      if(!ensureCtx()) return;
+      var sr = actx.sampleRate, dur = 3.6, len = Math.floor(sr * dur);
+      var buf = actx.createBuffer(1, len, sr);
+      var d = buf.getChannelData(0);
+
+      var claps = 300;
+      for(var c = 0; c < claps; c++){
+        var t0 = Math.floor(Math.random() * (len - sr * 0.12));
+        var amp = 0.3 + Math.random() * 0.7;
+        var decay = sr * (0.010 + Math.random() * 0.028);
+        for(var j = 0; j < decay; j++){
+          d[t0 + j] += (Math.random() * 2 - 1) * amp * Math.exp(-j / (decay * 0.32));
+        }
+      }
+
+      for(var i = 0; i < len; i++){
+        var env = Math.min(1, i / (sr * 0.2)) * Math.min(1, (len - i) / (sr * 1.1));
+        var v = d[i] * 0.45 + (Math.random() * 2 - 1) * 0.14 * env;
+        d[i] = v > 1 ? 1 : (v < -1 ? -1 : v);
+      }
+
+      var src = actx.createBufferSource(); src.buffer = buf;
+      var bp = actx.createBiquadFilter();
+      bp.type = 'bandpass'; bp.frequency.value = 1700; bp.Q.value = 0.55;
+      var g = actx.createGain();
+      var t = actx.currentTime;
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(0.55, t + 0.12);
+      g.gain.setValueAtTime(0.55, t + 2.3);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      src.connect(bp); bp.connect(g); g.connect(actx.destination);
+      src.start(t); src.stop(t + dur);
+    }catch(e){ /* o som é um extra; se falhar, a página continua igual */ }
+  }
+
   function chime(notes){
     if(!soundOn) return;
     try{
-      var AC = window.AudioContext || window.webkitAudioContext;
-      if(!AC) return;
-      if(!actx) actx = new AC();
-      if(actx.state === 'suspended') actx.resume();
+      if(!ensureCtx()) return;
       (notes || [523.25, 659.25, 783.99, 1046.5]).forEach(function(f, i){
         var o = actx.createOscillator(), g = actx.createGain(), t = actx.currentTime + i * 0.11;
         o.type = 'triangle';
@@ -492,88 +524,46 @@
     document.querySelector('.smoke').classList.add('go');
     document.getElementById('dogG').classList.add('lean');
     document.getElementById('cakeText').innerHTML = 'Pronto. Agora pede o que quiseres.<br>O cão já pediu o dele.';
-    chime();
+    applause();
     confetti('festa');
-    setTimeout(function(){
-      reveal(document.getElementById('w-letter'));
-      setTimeout(openKiss, reduce ? 0 : 1700);
-    }, reduce ? 0 : 900);
+    setTimeout(openMail, reduce ? 0 : 1600);
   });
 
-  /* ---- o beijinho ---- */
+  /* ---- tens correio ---- */
   var overlay = document.getElementById('overlay');
   var alertBody = document.getElementById('alertBody');
-  var pending = document.getElementById('pending');
-  var lastFocus = null;
 
-  var ASK =
-    '<h4 id="alertTitle">Bilhete por usar</h4>' +
-    '<p>Desde julho que está um bilhete dourado por usar. Válido para: ' +
-    '<em>digo-te pessoalmente</em>. Hoje digo aqui — era um beijinho. Aceitas?</p>' +
-    '<div class="actions"><button class="btn" id="kissNo" type="button">Agora não</button>' +
-    '<button class="btn default" id="kissYes" type="button">Aceito</button></div>';
+  var MAIL =
+    '<h4 id="alertTitle">Tens correio</h4>' +
+    '<p>Chegou uma mensagem para ti. Só uma &mdash; e não é publicidade.</p>' +
+    '<div class="actions"><button class="btn default" id="mailRead" type="button">Ler</button></div>';
 
-  var YES =
-    '<h4 id="alertTitle">Bilhete validado</h4>' +
-    '<p>Data: em breve. Lugar: a combinar — tal como estava escrito. ' +
-    '<em>Bom aniversário, Rute.</em></p>' +
-    '<div class="actions"><button class="btn default" id="kissClose" type="button">Fechar</button></div>';
-
-  var NO =
-    '<h4 id="alertTitle">Sem pressa</h4>' +
-    '<p>O bilhete não tem prazo de validade. Fica exatamente onde estava.</p>' +
-    '<div class="actions"><button class="btn default" id="kissClose" type="button">Fechar</button></div>';
-
-  function openKiss(){
-    lastFocus = document.activeElement;
-    alertBody.innerHTML = ASK;
+  function openMail(){
+    alertBody.innerHTML = MAIL;
     overlay.hidden = false;
-    document.getElementById('kissYes').addEventListener('click', function(){
-      alertBody.innerHTML = YES;
-      bindClose();
-      chime([659.25, 880, 1174.7]);
-      confetti('beijo');
-      pending.hidden = true;
-    });
-    document.getElementById('kissNo').addEventListener('click', function(){
-      alertBody.innerHTML = NO;
-      bindClose();
-      pending.hidden = false;
-    });
-    document.getElementById('kissYes').focus();
-  }
-
-  function bindClose(){
-    var b = document.getElementById('kissClose');
-    b.addEventListener('click', closeKiss);
+    chime([659.25, 987.77]);
+    var b = document.getElementById('mailRead');
+    b.addEventListener('click', readMail);
     b.focus();
   }
 
-  function closeKiss(){
+  function readMail(){
     overlay.hidden = true;
-    if(lastFocus && lastFocus.focus) lastFocus.focus();
+    reveal(document.getElementById('w-letter'));
   }
 
-  document.getElementById('reopenKiss').addEventListener('click', openKiss);
-
   document.addEventListener('keydown', function(e){
-    if(e.key === 'Escape' && !overlay.hidden){
-      overlay.hidden = true;
-      if(!document.getElementById('kissClose')) pending.hidden = false;
-    }
+    if(e.key === 'Escape' && !overlay.hidden) readMail();
   });
 
   /* ---- confetti ---- */
   function confetti(mode){
     var box = document.getElementById('confetti');
     var colors = ['#17161A', '#C0405C', '#DE9526', '#3B8A6E', '#14509B', '#FBFAF7'];
-    var n = reduce ? 0 : (mode === 'beijo' ? 60 : 84);
+    var n = reduce ? 0 : 84;
     for(var i = 0; i < n; i++){
       var c = document.createElement('i');
-      var r = Math.random();
-      if(mode === 'beijo' && r < 0.62){
-        c.className = 'heart';
-      }else if(mode === 'festa' && r < 0.28){
+      if(mode === 'festa' && Math.random() < 0.28){
         c.className = 'paw';
       }else{
         c.style.background = colors[Math.floor(Math.random() * colors.length)];
