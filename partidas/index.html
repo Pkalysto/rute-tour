@@ -80,7 +80,7 @@
   }
   .colunas .c3{text-align:right}
 
-  .linhas{padding:6px 18px 14px; font-size:clamp(9.5px, 2.75vw, 15px)}
+  .linhas{padding:6px 18px 14px; font-size:clamp(9px, 2.6vw, 15px)}
 
   .linha{
     display:grid; grid-template-columns:auto 1fr auto; gap:14px;
@@ -302,21 +302,17 @@
     ['AGORA', 'PARABÉNS, RUTE',      'BOARDING NOW',  'destaque']
   ];
 
-  var LARG = {hora:5, dest:19, est:13};
   var GLIFOS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 
   var celulas = [];
   var caixa = document.getElementById('linhas');
 
-  function coluna(texto, largura, classe){
+  function coluna(texto, classe){
     var d = document.createElement('div');
     d.className = 'col ' + classe;
-    var alvo = classe === 'est'
-      ? texto.padStart(largura, ' ')
-      : texto.padEnd(largura, ' ');
-    for(var i = 0; i < largura; i++){
+    for(var i = 0; i < texto.length; i++){
       var s = document.createElement('span');
-      var ch = alvo.charAt(i);
+      var ch = texto.charAt(i);
       s.className = 'f' + (ch === ' ' ? ' vazio' : '');
       s.textContent = ch === ' ' ? ' ' : '';
       if(ch !== ' ') celulas.push({el:s, alvo:ch});
@@ -328,9 +324,9 @@
   LINHAS.forEach(function(L){
     var linha = document.createElement('div');
     linha.className = 'linha ' + L[3];
-    linha.appendChild(coluna(L[0], LARG.hora, 'hora'));
-    linha.appendChild(coluna(L[1], LARG.dest, 'dest'));
-    linha.appendChild(coluna(L[2], LARG.est,  'est'));
+    linha.appendChild(coluna(L[0], 'hora'));
+    linha.appendChild(coluna(L[1], 'dest'));
+    linha.appendChild(coluna(L[2], 'est'));
     caixa.appendChild(linha);
   });
 
