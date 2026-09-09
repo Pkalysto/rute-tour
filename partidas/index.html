@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#E4E8DF">
+<style>:root{color-scheme:light}body{margin:0;font:14px system-ui,sans-serif;background:#E4E8DF}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Partidas da Rute</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Karla:ital,wght@0,400;0,500;1,400&family=Roboto+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    color-scheme: light;
+    --sala:#E4E8DF;
+    --quadro:#F7F9F4;
+    --flap:#FFFFFF;
+    --dobra:#D3DACD;
+    --moldura:#C3CBBD;
+    --tinta:#232A24;
+    --cinza:#79837A;
+    --verde:#3E8E5A;
+    --amarelo:#F0C000;
+    --amarelo-fundo:#FBE896;
+    --sig:"Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --flapf:"Roboto Mono", ui-monospace, Consolas, monospace;
+    --texto:"Karla", system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+
+  body{
+    background:var(--sala);
+    background-image:
+      repeating-linear-gradient(180deg, rgba(35,42,36,.028) 0 1px, transparent 1px 4px);
+    color:var(--tinta);
+    font-family:var(--texto);
+    min-height:100vh;
+    padding:26px 16px 60px;
+    overflow-x:hidden;
+  }
+
+  .sala{max-width:660px; margin:0 auto; display:flex; flex-direction:column; gap:22px}
+
+  /* ---------- quadro ---------- */
+  .quadro{
+    background:var(--quadro);
+    border:1px solid var(--moldura);
+    border-radius:5px;
+    box-shadow:0 1px 0 #fff inset, 0 10px 26px rgba(35,42,36,.10);
+    overflow:hidden;
+  }
+
+  .topo{
+    display:flex; align-items:baseline; gap:14px;
+    padding:15px 18px 13px;
+    background:var(--amarelo);
+    border-bottom:1px solid var(--moldura);
+  }
+  .topo .marca{display:flex; align-items:baseline; gap:11px; flex-wrap:wrap}
+  .topo h1{
+    font-family:var(--sig); font-weight:700; font-size:26px;
+    letter-spacing:.14em; margin:0; color:var(--tinta);
+  }
+  .topo .en{
+    font-family:var(--sig); font-weight:600; font-size:11px;
+    letter-spacing:.2em; color:#6B5A00;
+  }
+  .topo .sub{
+    font-family:var(--sig); font-weight:600; font-size:11px;
+    letter-spacing:.13em; color:#6B5A00; margin-left:auto; white-space:nowrap;
+  }
+
+  .colunas{
+    display:grid; grid-template-columns:auto 1fr auto; gap:14px;
+    padding:9px 18px; background:var(--quadro);
+    border-bottom:1px solid var(--dobra);
+    font-family:var(--sig); font-weight:600; font-size:10px;
+    letter-spacing:.16em; color:var(--cinza);
+  }
+  .colunas .c3{text-align:right}
+
+  .linhas{padding:6px 18px 14px; font-size:clamp(9.5px, 2.75vw, 15px)}
+
+  .linha{
+    display:grid; grid-template-columns:auto 1fr auto; gap:14px;
+    align-items:center;
+    padding:5px 0;
+    border-bottom:1px solid var(--dobra);
+  }
+  .linha:last-child{border-bottom:0}
+
+  .col{display:flex; gap:1px; white-space:nowrap}
+  .col.est{justify-content:flex-end}
+
+  .f{
+    font-family:var(--flapf); font-weight:500;
+    width:1.02em; height:1.62em;
+    display:inline-flex; align-items:center; justify-content:center;
+    background:var(--flap);
+    color:var(--tinta);
+    border-radius:1.5px;
+    position:relative;
+    line-height:1;
+  }
+  /* a dobra a meio: é isto que faz o painel ler como split-flap */
+  .f::after{
+    content:""; position:absolute; left:0; right:0; top:50%;
+    border-top:1px solid rgba(35,42,36,.16);
+  }
+  .f.vazio{background:transparent}
+  .f.vazio::after{display:none}
+  .f.girar{color:var(--cinza)}
+
+  .linha.verde .est .f{color:var(--verde)}
+  .linha.amarelo .est .f{color:#9A7A00}
+  .linha.cinza .est .f{color:var(--cinza)}
+
+  .linha.destaque{background:var(--amarelo-fundo); margin:0 -18px; padding:7px 18px; border-bottom:0}
+  .linha.destaque .f{background:transparent; font-weight:500}
+  .linha.destaque .f::after{border-top-color:rgba(35,42,36,.22)}
+
+  .rodape{
+    display:flex; flex-wrap:wrap; gap:16px;
+    padding:11px 18px; border-top:1px solid var(--dobra);
+    background:#EFF2EA;
+    font-family:var(--sig); font-weight:600; font-size:10px;
+    letter-spacing:.1em; color:var(--cinza);
+  }
+  .rodape span{display:inline-flex; align-items:center; gap:6px}
+  .pt{width:7px; height:7px; border-radius:50%; flex:none}
+  .pt.v{background:var(--verde)}
+  .pt.a{background:var(--amarelo)}
+  .pt.c{background:var(--cinza)}
+
+  /* ---------- chamada ---------- */
+  .chamada{
+    display:flex; align-items:center; gap:14px;
+    background:var(--quadro);
+    border:1px solid var(--moldura);
+    border-left:4px solid var(--verde);
+    border-radius:5px; padding:15px 17px;
+    box-shadow:0 6px 18px rgba(35,42,36,.07);
+    animation:sobe .22s ease both;
+  }
+  @keyframes sobe{from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:none}}
+
+  .led{width:11px; height:11px; border-radius:50%; background:var(--verde); flex:none; animation:pisca 1.1s ease-in-out infinite}
+  @keyframes pisca{50%{opacity:.28}}
+
+  .chamada .txt{flex:1; min-width:0}
+  .chamada h2{
+    font-family:var(--sig); font-weight:700; font-size:11px;
+    letter-spacing:.15em; margin:0 0 4px; color:var(--cinza);
+  }
+  .chamada p{margin:0; font-size:15px; line-height:1.45}
+
+  .btn{
+    font-family:var(--sig); font-weight:600; font-size:12px; letter-spacing:.07em;
+    background:var(--tinta); color:var(--quadro);
+    border:0; border-radius:4px; padding:11px 16px; cursor:pointer; flex:none;
+  }
+  .btn:hover{background:#39443A}
+  .btn:active{transform:translateY(1px)}
+  .btn:focus-visible{outline:2px solid var(--verde); outline-offset:3px}
+
+  /* ---------- carta ---------- */
+  .carta{
+    background:var(--quadro);
+    border:1px solid var(--moldura);
+    border-radius:5px; padding:28px 26px 24px;
+    box-shadow:0 10px 26px rgba(35,42,36,.10);
+    animation:sobe .26s ease both;
+  }
+  .carta h3{
+    font-family:var(--texto); font-weight:500; font-size:28px;
+    margin:0 0 14px; letter-spacing:-.015em; text-wrap:balance;
+  }
+  .carta p{font-size:17px; line-height:1.62; margin:0 0 13px; max-width:36em}
+  .carta .assina{font-style:italic; margin-top:20px}
+  .carta .meta{
+    margin-top:22px; padding-top:12px; border-top:1px solid var(--dobra);
+    font-family:var(--sig); font-weight:600; font-size:10px;
+    letter-spacing:.12em; color:var(--cinza);
+  }
+
+  .creditos{
+    font-family:var(--sig); font-weight:600; font-size:10px;
+    letter-spacing:.12em; color:var(--cinza); text-align:center;
+  }
+
+  /* ---------- som ---------- */
+  .somtoggle{
+    position:fixed; right:14px; top:14px; z-index:60;
+    font-family:var(--sig); font-weight:600; font-size:10px; letter-spacing:.1em;
+    background:var(--quadro); color:var(--cinza);
+    border:1px solid var(--moldura); border-radius:4px;
+    padding:7px 10px; cursor:pointer;
+  }
+  .somtoggle[aria-pressed="true"]{background:var(--tinta); color:var(--quadro); border-color:var(--tinta)}
+
+  /* ---------- confetti ---------- */
+  #conf{position:fixed; inset:0; pointer-events:none; z-index:80; overflow:hidden}
+  #conf i{position:absolute; top:-22px; width:7px; height:7px; animation:cai linear forwards}
+  #conf i.pata{
+    width:13px; height:13px; background-repeat:no-repeat; background-position:center; background-size:contain;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%233E8E5A'%3E%3Ccircle cx='6' cy='5' r='2.6'/%3E%3Ccircle cx='12' cy='4' r='2.6'/%3E%3Ccircle cx='16.5' cy='8.5' r='2.4'/%3E%3Ccircle cx='3.5' cy='10' r='2.4'/%3E%3Cellipse cx='10' cy='14' rx='5.4' ry='4.6'/%3E%3C/svg%3E");
+  }
+  @keyframes cai{to{transform:translate3d(var(--x),108vh,0) rotate(520deg)}}
+
+  @media (max-width:560px){
+    body{padding:18px 11px 46px}
+    .colunas .c1, .linha .hora{display:none}
+    .colunas{grid-template-columns:1fr auto; gap:10px}
+    .linha{grid-template-columns:1fr auto; gap:10px}
+    .topo h1{font-size:21px; letter-spacing:.1em}
+    .topo{padding:13px 14px 11px}
+    .colunas, .linhas, .rodape{padding-left:14px; padding-right:14px}
+    .linha.destaque{margin:0 -14px; padding-left:14px; padding-right:14px}
+    .carta{padding:22px 18px 20px}
+    .carta h3{font-size:24px}
+    .carta p{font-size:16px}
+    .chamada{flex-wrap:wrap}
+    .chamada .btn{width:100%}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.001ms !important; animation-iteration-count:1 !important}
+  }
+</style>
+
+<button class="somtoggle" id="som" type="button" aria-pressed="true">SOM</button>
+
+<div class="sala">
+
+  <section class="quadro">
+    <div class="topo">
+      <div class="marca">
+        <h1>PARTIDAS</h1>
+        <span class="en">DEPARTURES</span>
+      </div>
+      <span class="sub">RUTE &middot; 09 SET 2026</span>
+    </div>
+
+    <div class="colunas">
+      <span class="c1">HORA</span>
+      <span class="c2">DESTINO</span>
+      <span class="c3">ESTADO</span>
+    </div>
+
+    <div class="linhas" id="linhas" aria-live="polite"></div>
+
+    <div class="rodape">
+      <span><i class="pt v"></i>ON TIME</span>
+      <span><i class="pt a"></i>SAVE THE DATE</span>
+      <span><i class="pt c"></i>TBC</span>
+    </div>
+  </section>
+
+  <section class="chamada" id="chamada" hidden>
+    <span class="led" aria-hidden="true"></span>
+    <div class="txt">
+      <h2>CHAMADA DE PASSAGEIRA &middot; PASSENGER CALL</h2>
+      <p>Rute, tem uma mensagem à sua espera no balcão.</p>
+    </div>
+    <button class="btn" id="ler" type="button">LER MENSAGEM</button>
+  </section>
+
+  <section class="carta" id="carta" hidden>
+    <h3>Parabéns, Rute.</h3>
+    <p>
+      Espero que tenhas um dia mesmo bom, cheio de coisas simples,
+      pessoas de quem gostas e um bolo à altura da ocasião.
+    </p>
+    <p>
+      Que apareça um cão pelo caminho só para teres a quem fazer festas,
+      que o Calvão e o Porto ganhem no mesmo fim de semana,
+      e que sobre bolo para a segunda fatia.
+    </p>
+    <p>Aproveita muito o teu dia.</p>
+    <p class="assina">— Paulo</p>
+    <p class="meta">BOARDING OPEN &middot; NO EXPIRY DATE &middot; 1 PASSAGEIRA</p>
+  </section>
+
+  <p class="creditos">QUADRO DE PARTIDAS &middot; EDIÇÃO DE 09.09.2026</p>
+</div>
+
+<div id="conf" aria-hidden="true"></div>
+
+<script>
+(function(){
+  var reduz = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var LINHAS = [
+    ['07:30', 'UM ANO NOVO',         'ALL GOOD',      'verde'],
+    ['09:15', 'BOLO',                'SERVING NOW',   'verde'],
+    ['11:00', 'SEGUNDA FATIA',       'NO STRESS',     'verde'],
+    ['13:40', 'CALVÃO, CASA E FORA', 'ALWAYS',        'verde'],
+    ['16:20', 'FESTIVAIS 2027',      'SAVE THE DATE', 'amarelo'],
+    ['18:05', 'CÃES PELO CAMINHO',   'OBVIOUSLY',     'verde'],
+    ['20:30', 'PRÓXIMO DESTINO',     'TBC',           'cinza'],
+    ['AGORA', 'PARABÉNS, RUTE',      'BOARDING NOW',  'destaque']
+  ];
+
+  var LARG = {hora:5, dest:19, est:13};
+  var GLIFOS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+
+  var celulas = [];
+  var caixa = document.getElementById('linhas');
+
+  function coluna(texto, largura, classe){
+    var d = document.createElement('div');
+    d.className = 'col ' + classe;
+    var alvo = classe === 'est'
+      ? texto.padStart(largura, ' ')
+      : texto.padEnd(largura, ' ');
+    for(var i = 0; i < largura; i++){
+      var s = document.createElement('span');
+      var ch = alvo.charAt(i);
+      s.className = 'f' + (ch === ' ' ? ' vazio' : '');
+      s.textContent = ch === ' ' ? ' ' : '';
+      if(ch !== ' ') celulas.push({el:s, alvo:ch});
+      d.appendChild(s);
+    }
+    return d;
+  }
+
+  LINHAS.forEach(function(L){
+    var linha = document.createElement('div');
+    linha.className = 'linha ' + L[3];
+    linha.appendChild(coluna(L[0], LARG.hora, 'hora'));
+    linha.appendChild(coluna(L[1], LARG.dest, 'dest'));
+    linha.appendChild(coluna(L[2], LARG.est,  'est'));
+    caixa.appendChild(linha);
+  });
+
+  /* ---- som ---- */
+  var ligado = true, actx = null;
+  var btnSom = document.getElementById('som');
+  btnSom.addEventListener('click', function(){
+    ligado = !ligado;
+    btnSom.setAttribute('aria-pressed', String(ligado));
+    btnSom.textContent = ligado ? 'SOM' : 'SEM SOM';
+    if(!ligado && actx && actx.state === 'running') actx.suspend();
+    if(ligado && actx && actx.state === 'suspended') actx.resume();
+  });
+
+  function ctx(){
+    var AC = window.AudioContext || window.webkitAudioContext;
+    if(!AC) return null;
+    if(!actx) actx = new AC();
+    if(actx.state === 'suspended' && ligado) actx.resume();
+    return actx;
+  }
+
+  function ruido(dur, densidade, decaimento, amp){
+    var sr = actx.sampleRate, len = Math.floor(sr * dur);
+    var buf = actx.createBuffer(1, len, sr);
+    var d = buf.getChannelData(0);
+    var n = Math.floor(dur * densidade);
+    for(var k = 0; k < n; k++){
+      var t0 = Math.floor(Math.random() * (len - sr * decaimento - 1));
+      var a = (0.3 + Math.random() * 0.7) * amp;
+      var dec = sr * decaimento;
+      for(var j = 0; j < dec; j++){
+        var v = d[t0 + j] + (Math.random() * 2 - 1) * a * Math.exp(-j / (dec * 0.3));
+        d[t0 + j] = v > 1 ? 1 : (v < -1 ? -1 : v);
+      }
+    }
+    return buf;
+  }
+
+  /* estalido dos painéis a rodar */
+  function estalidos(dur){
+    if(!ligado) return;
+    try{
+      if(!ctx()) return;
+      var buf = ruido(dur, 150, 0.006, 0.5);
+      var src = actx.createBufferSource(); src.buffer = buf;
+      var hp = actx.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 2200;
+      var g = actx.createGain();
+      var t = actx.currentTime;
+      g.gain.setValueAtTime(0.22, t);
+      g.gain.setValueAtTime(0.22, t + dur * 0.72);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      src.connect(hp); hp.connect(g); g.connect(actx.destination);
+      src.start(t); src.stop(t + dur);
+    }catch(e){ /* o som é um extra */ }
+  }
+
+  /* palmas e vozes */
+  function palmas(){
+    if(!ligado) return;
+    try{
+      if(!ctx()) return;
+      var dur = 3.6, sr = actx.sampleRate, len = Math.floor(sr * dur);
+      var buf = ruido(dur, 85, 0.028, 0.85);
+      var d = buf.getChannelData(0);
+      for(var i = 0; i < len; i++){
+        var env = Math.min(1, i / (sr * 0.2)) * Math.min(1, (len - i) / (sr * 1.1));
+        var v = d[i] * 0.5 + (Math.random() * 2 - 1) * 0.13 * env;
+        d[i] = v > 1 ? 1 : (v < -1 ? -1 : v);
+      }
+      var src = actx.createBufferSource(); src.buffer = buf;
+      var bp = actx.createBiquadFilter();
+      bp.type = 'bandpass'; bp.frequency.value = 1700; bp.Q.value = 0.55;
+      var g = actx.createGain();
+      var t = actx.currentTime;
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(0.55, t + 0.12);
+      g.gain.setValueAtTime(0.55, t + 2.3);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      src.connect(bp); bp.connect(g); g.connect(actx.destination);
+      src.start(t); src.stop(t + dur);
+    }catch(e){ /* idem */ }
+  }
+
+  /* ---- rodar os painéis ---- */
+  var POR_LINHA = 200, POR_CELULA = 26, GIRO = 560;
+
+  function assenta(){
+    document.getElementById('chamada').hidden = false;
+  }
+
+  if(reduz){
+    celulas.forEach(function(c){ c.el.textContent = c.alvo; });
+    assenta();
+  }else{
+    var porLinha = {};
+    celulas.forEach(function(c){
+      var li = [].indexOf.call(caixa.children, c.el.closest('.linha'));
+      porLinha[li] = (porLinha[li] || 0);
+      c.fim = li * POR_LINHA + porLinha[li] * POR_CELULA + GIRO;
+      porLinha[li]++;
+      c.el.classList.add('girar');
+    });
+
+    var total = 0;
+    celulas.forEach(function(c){ if(c.fim > total) total = c.fim; });
+
+    estalidos((total + 120) / 1000);
+
+    var t0 = performance.now();
+    (function passo(agora){
+      var t = agora - t0, feito = true;
+      for(var i = 0; i < celulas.length; i++){
+        var c = celulas[i];
+        if(c.pronto) continue;
+        if(t >= c.fim){
+          c.el.textContent = c.alvo;
+          c.el.classList.remove('girar');
+          c.pronto = true;
+        }else{
+          feito = false;
+          if(t > c.fim - GIRO){
+            c.el.textContent = GLIFOS.charAt((Math.random() * GLIFOS.length) | 0);
+          }
+        }
+      }
+      if(feito){
+        palmas();
+        confetti();
+        setTimeout(assenta, 500);
+      }else{
+        requestAnimationFrame(passo);
+      }
+    })(t0);
+  }
+
+  document.getElementById('ler').addEventListener('click', function(){
+    document.getElementById('carta').hidden = false;
+    this.disabled = true;
+    this.textContent = 'MENSAGEM ABERTA';
+    document.getElementById('carta').scrollIntoView({behavior: reduz ? 'auto' : 'smooth', block:'nearest'});
+  });
+
+  function confetti(){
+    if(reduz) return;
+    var box = document.getElementById('conf');
+    var cores = ['#3E8E5A', '#F0C000', '#79837A', '#FFFFFF', '#232A24'];
+    for(var i = 0; i < 80; i++){
+      var c = document.createElement('i');
+      if(Math.random() < 0.24){
+        c.className = 'pata';
+      }else{
+        c.style.background = cores[(Math.random() * cores.length) | 0];
+      }
+      c.style.left = (Math.random() * 100) + 'vw';
+      c.style.setProperty('--x', (Math.random() * 150 - 75) + 'px');
+      c.style.animationDuration = (2.4 + Math.random() * 2) + 's';
+      c.style.animationDelay = (Math.random() * 0.35) + 's';
+      box.appendChild(c);
+      (function(el){ setTimeout(function(){ el.remove(); }, 5200); })(c);
+    }
+  }
+})();
+</script>
+</body>
+</html>
