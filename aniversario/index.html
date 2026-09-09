@@ -39,6 +39,7 @@
     font-size:13px;
     min-height:100vh;
     padding-bottom:52px;
+    overflow-x:hidden;
   }
 
   /* barra de menus */
@@ -52,7 +53,7 @@
   }
   .menubar .glyph{display:flex; align-items:center; margin-right:-4px}
   .menubar .grow{margin-left:auto}
-  .menubar .clock{color:var(--ink-soft)}
+  .menubar .clock{color:var(--ink-soft); white-space:nowrap}
   .snd{
     font-family:var(--px); font-size:12px; line-height:1;
     border:2px solid var(--ink); background:var(--chrome); color:var(--ink);
@@ -205,6 +206,16 @@
   }
   @keyframes fall{to{transform:translate3d(var(--x), 108vh, 0) rotate(540deg)}}
 
+  @media (max-width:620px){
+    .menubar .menu-item:nth-child(2) ~ .menu-item{display:none}
+  }
+  @media (max-width:470px){
+    .menubar .menu-item{display:none}
+  }
+  @media (max-width:360px){
+    .menubar .clock{display:none}
+  }
+
   @media (max-width:520px){
     .desktop{padding:24px 12px 0; gap:24px}
     .pane{padding:15px 14px 17px}
@@ -229,9 +240,9 @@
       <path d="M7.5 2.9c1.2-.9.6-2.1 0-2.7-.8.8-1.1 1.8 0 2.7Z" fill="#17161A"/>
     </svg>
   </span>
-  <span>Ficheiro</span>
-  <span>Editar</span>
-  <span>Especial</span>
+  <span class="menu-item">Ficheiro</span>
+  <span class="menu-item">Editar</span>
+  <span class="menu-item">Especial</span>
   <span class="grow clock">qua 9 set 2026</span>
   <button class="snd" id="snd" type="button" aria-pressed="true">som</button>
 </div>
